@@ -18,12 +18,10 @@ export class UserService {
   }
 
   async createUser(data) {
-    // Validasi data
     if (!data.email || !data.password) {
       throw new Error('Email and password are required')
     }
 
-    // Cek email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(data.email)) {
       throw new Error('Invalid email format')
@@ -33,12 +31,12 @@ export class UserService {
   }
 
   async updateUser(id, data) {
-    await this.getUserById(id) // Cek apakah user ada
+    await this.getUserById(id) 
     return await this.repository.update(id, data)
   }
 
   async deleteUser(id) {
-    await this.getUserById(id) // Cek apakah user ada
+    await this.getUserById(id) 
     return await this.repository.delete(id)
   }
 } 

@@ -6,10 +6,9 @@ export function middleware(request) {
     const token = request.headers.get('authorization')?.split(' ')[1]
     
     if (!token) {
-      throw new Error('Token tidak ditemukan')
+      throw new Error('Token Not Found')
     }
-
-    // Verifikasi token
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     request.user = decoded
 
@@ -22,7 +21,6 @@ export function middleware(request) {
   }
 }
 
-// Konfigurasi path yang memerlukan autentikasi
 export const config = {
   matcher: ['/api/v1/users/:path*', '/api/v1/products/:path*']
 } 
