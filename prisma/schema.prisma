@@ -14,35 +14,48 @@ datasource db {
 }
 
 model Users {
-  id          Int         @id @default(autoincrement())
-  name        String
-  username    String
-  email       String
-  password    String
-  phone       String
-  photo_url   String
-  addresses   Adresses[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id        Int        @id @default(autoincrement())
+  name      String
+  username  String
+  email     String
+  password  String
+  phone     String
+  photo_url String
+  addresses Adresses[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Adresses {
-  id          Int      @id @default(autoincrement())
-  user_id     Int
-  user        Users    @relation(fields: [user_id], references: [id])
-  street      String
-  city        String
-  state       String
-  zip_code    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  user      Users    @relation(fields: [user_id], references: [id])
+  street    String
+  city      String
+  state     String
+  zip_code  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Products {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
   description String
   price       Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  photo_url   String
+  stock       Int
+  category_id Int
+  category    Categories @relation(fields: [category_id], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Categories {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Products    Products[]
 }

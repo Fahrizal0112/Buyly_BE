@@ -53,9 +53,12 @@ export class AuthService {
     if (!emailRules.test(userData.email)) {
       throw new Error("Email is not valid");
     }
-    const passwordRules = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRules =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRules.test(userData.password)) {
-      throw new Error("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character");
+      throw new Error(
+        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      );
     }
 
     const existingUsername = await this.repository.findUserByUsername(
