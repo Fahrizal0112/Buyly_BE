@@ -20,4 +20,8 @@ export class ProductController {
   async getProductByCategory(categoryId) {
     return await this.service.findProductByCategory(categoryId);
   }
+
+  async getProductByName(name) {
+    return await this.service.findProductByName(name);
+  }
 }

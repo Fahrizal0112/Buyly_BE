@@ -1,7 +1,6 @@
 import { AuthController } from "@/modules/auth/controllers/auth.controller";
 import { NextResponse } from "next/server";
 import { ApiResponse } from "@/utils/api";
-import { prisma } from "@/lib/prisma";
 
 export async function POST(request) {
   try {

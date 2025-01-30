@@ -26,5 +26,8 @@ export class ProductService {
   }
   async findProductByCategory(categoryId) {
     return await this.repository.findProductByCategory(categoryId)
+  }   
+  async findProductByName(name) {
+    return await this.repository.findProductByName(name)
   }
 }

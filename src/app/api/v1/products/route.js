@@ -7,10 +7,13 @@ export async function GET(req) {
     const controller = new ProductController();
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get("categoryId");
+    const name = searchParams.get("name");
 
     let result;
     if (categoryId) {
       result = await controller.getProductByCategory(Number(categoryId));
+    } else if (name) {
+      result = await controller.getProductByName(name);
     } else {
       result = await controller.getAllProducts();
     }
