@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+import { cookies } from 'next/headers'
 
 export function middleware(request) {
   try {
-    const token = request.headers.get('authorization')?.split(' ')[1]
+    const token = cookies().get('token')?.value
     
     if (!token) {
       throw new Error('Token Not Found')
@@ -22,5 +23,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/api/v1/users/:path*', '/api/v1/products/:path*']
+  matcher: ['/api/v1/products/:path*']
 } 
