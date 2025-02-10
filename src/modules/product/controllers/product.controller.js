@@ -16,7 +16,12 @@ export class ProductController {
   async createProduct(productData) {
     return await this.service.createProduct(productData);
   }
-
+  async updateProduct(productData) {
+    return await this.service.updateProduct(productData);
+  }
+  async deleteProduct(id) {
+    return await this.service.deleteProduct(id);
+  }
   async getProductByCategory(categoryId) {
     return await this.service.findProductByCategory(categoryId);
   }

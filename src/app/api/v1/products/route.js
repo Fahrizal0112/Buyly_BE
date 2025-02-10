@@ -57,3 +57,39 @@ export async function POST(req) {
     );
   }
 }
+
+export async function PUT(req) {
+  try {
+    const controller = new ProductController();
+    const data = await req.json();
+    const requiredFields = ['name', 'description', 'price', 'stock', 'category_id', 'photo_url'];
+    for (const field of requiredFields) {
+      if (!data[field]) {
+      return NextResponse.json(
+        ApiResponse.error(`${field} is required`),
+        { status: 400 }
+      );
+    }
+  }
+
+  const result = await controller.updateProduct({
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    price: parseFloat(data.price),
+    stock: parseInt(data.stock),
+    category_id: parseInt(data.category_id),
+    photo_url: data.photo_url
+  });
+  return NextResponse.json(ApiResponse.success(result, 'Product updated successfully'), { status: 200 });
+  } catch (error) {
+    return NextResponse.json(ApiResponse.error(error.message), { status: 400 });
+  }
+}
+
+export async function DELETE(req) {
+  const controller = new ProductController();
+  const data = await req.json();
+  const result = await controller.deleteProduct(data.id);
+  return NextResponse.json(ApiResponse.success(result, 'Product deleted successfully'), { status: 200 });
+}

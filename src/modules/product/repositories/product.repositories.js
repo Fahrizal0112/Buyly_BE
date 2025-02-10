@@ -31,6 +31,17 @@ export class ProductRepository {
       },
     });
   }
+  async updateProduct(productData) {
+    return await prisma.products.update({
+      where: { id: Number(productData.id) },
+      data: productData,
+    });
+  }
+  async deleteProduct(id) {
+    return await prisma.products.delete({
+      where: { id: Number(id) },
+    });
+  }
   async findProductByCategory(categoryId) {
     return await prisma.products.findMany({
       where: { category_id: Number(categoryId) },

@@ -24,6 +24,12 @@ export class ProductService {
     }
     return await this.repository.createProduct(productData)
   }
+  async updateProduct(productData) {
+    return await this.repository.updateProduct(productData)
+  }
+  async deleteProduct(id) {
+    return await this.repository.deleteProduct(id)
+  }
   async findProductByCategory(categoryId) {
     return await this.repository.findProductByCategory(categoryId)
   }   
