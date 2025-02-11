@@ -11,6 +11,11 @@ export class AuthController {
     async register(userData) {
         return await this.service.register(userData)
     }
+
+    async updateUser(userData) {
+        return await this.service.updateUser(userData)
+    }
+
     async logout(){
         return {
             message : "Logout Successfully"

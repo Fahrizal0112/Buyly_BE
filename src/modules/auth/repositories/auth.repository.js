@@ -11,4 +11,11 @@ export class AuthRepository {
             where: {username}
         })
     }
+
+    async updateUser(userData) {
+        return await prisma.users.update({
+            where: { id: userData.id },
+            data: userData,
+        })
+    }
 }

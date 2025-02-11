@@ -96,19 +96,42 @@ export class AuthService {
 
     return newUser;
   }
-  async updateUser(userId, userData) {
-    const user = await prisma.users.findUnique({
-      where: { id: userId },
-    });
-    if (!user) {
-      throw new Error("User not found");
+  async updateUser(userData) {
+    try {
+      const existingUser = await prisma.users.findUnique({
+        where: { id: userData.id }
+      });
+
+      if (!existingUser) {
+        throw new Error("User not found");
+      }
+
+      const updateData = {
+        name: userData.name,
+        username: userData.username,
+        email: userData.email,
+        phone: userData.phone,
+        photo_url: userData.photo_url
+      };
+
+      if (userData.password) {
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        updateData.password = hashedPassword;
+      }
+
+      const updatedUser = await prisma.users.update({
+        where: { id: userData.id },
+        data: updateData
+      });
+
+      delete updatedUser.password;
+
+      return updatedUser;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new Error('Username or email already exists');
+      }
+      throw error;
     }
-
-    const updatedUser = await prisma.users.update({
-      where: { id: userId },
-      data: userData,
-    });
-
-    return updatedUser;
   }
 }
