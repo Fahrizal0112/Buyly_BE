@@ -74,12 +74,12 @@ export async function PUT(req) {
 
   const result = await controller.updateProduct({
     id: data.id,
-    name: data.name,
-    description: data.description,
-    price: parseFloat(data.price),
-    stock: parseInt(data.stock),
-    category_id: parseInt(data.category_id),
-    photo_url: data.photo_url
+      name: data.name,
+      description: data.description,
+      price: parseFloat(data.price),
+      stock: parseInt(data.stock),
+      category_id: parseInt(data.category_id),
+      photo_url: data.photo_url,
   });
   return NextResponse.json(ApiResponse.success(result, 'Product updated successfully'), { status: 200 });
   } catch (error) {
