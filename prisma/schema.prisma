@@ -20,7 +20,7 @@ model Users {
   email     String
   password  String
   phone     String
-  photo_url String
+  photo_url String?
   addresses Adresses[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
