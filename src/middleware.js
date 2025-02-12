@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 
 export function middleware(request) {
-    // Handle OPTIONS request
     if (request.method === 'OPTIONS') {
         return new NextResponse(null, {
             status: 200,
@@ -14,10 +13,8 @@ export function middleware(request) {
         })
     }
 
-    // Handle actual request
     const response = NextResponse.next()
     
-    // Tambahkan header CORS
     response.headers.set('Access-Control-Allow-Credentials', 'true')
     response.headers.set('Access-Control-Allow-Origin', '*')
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
@@ -29,7 +26,6 @@ export function middleware(request) {
     return response
 }
 
-// Konfigurasi path yang akan dikenakan middleware
 export const config = {
-    matcher: '/api/:path*'
+    matcher: '/api/v1/:path*'
 } 

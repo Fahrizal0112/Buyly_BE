@@ -34,16 +34,28 @@ export async function POST(request) {
           });
         }
 
-        result = await controller.login(data);
+        result = await controller.login({
+          username: data.username,
+          email: data.email,
+          password: data.password,
+          token: data.token,
+        });
+
+        const userResponse = { 
+          ...result.user,
+          password: result.user.password,
+          token: result.token
+        };
+
         response = NextResponse.json(
-          ApiResponse.success(result.user, "Login successful")
+          ApiResponse.success(userResponse, "Login successful")
         );
 
         response.cookies.set({
           name: "token",
           value: result.token,
           httpOnly: true,
-          secure: true,
+          secure: false,
           path: "/",
         });
 
@@ -64,7 +76,8 @@ export async function POST(request) {
         );
 
       case "update":
-        const token = cookies().get('token')?.value;
+        const token = request.headers.get('Authorization')
+        console.log("Token:", token);
         
         if (!token) {
           return NextResponse.json(
@@ -110,7 +123,7 @@ export async function POST(request) {
           name: "token",
           value: "",
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: false,
           sameSite: "strict",
           maxAge: 0,
           path: "/"
@@ -130,5 +143,25 @@ export async function POST(request) {
       ApiResponse.error(error.message || "Internal server error"),
       { status: error.status || 500 }
     );
+  }
+}
+
+export async function GET(request) {
+  try {
+    const controller = new AuthController();
+    const cookieStore = await cookies();
+    const tokencookie = cookieStore.get("token");
+    console.log("Token:", tokencookie);
+
+    if (!tokencookie || !tokencookie.value) {
+      return NextResponse.json(
+        ApiResponse.error("Unauthorized: No token provided"),
+        { status: 401 }
+      );
+    }
+    const result = await controller.getMe(tokencookie.value);
+    return NextResponse.json(ApiResponse.success(result, "Get me successful"));
+  } catch (error) {
+    return NextResponse.json(ApiResponse.error(error.message), { status: 400 });
   }
 }

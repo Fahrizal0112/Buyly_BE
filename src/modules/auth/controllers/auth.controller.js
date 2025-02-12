@@ -15,10 +15,13 @@ export class AuthController {
     async updateUser(userData) {
         return await this.service.updateUser(userData)
     }
-
     async logout(){
         return {
             message : "Logout Successfully"
         }
+    }
+
+    async getMe(token) {
+        return await this.service.getMe(token);
     }
 }
