@@ -134,4 +134,54 @@ export class AuthService {
       throw error;
     }
   }
+  async getMe(token) {
+    try {
+      if (!token) {
+        throw new Error("Token diperlukan");
+      }
+      
+      console.log("JWT_SECRET:", process.env.JWT_SECRET);  // Debug nilai JWT_SECRET
+      console.log("Token yang akan di-verify:", token);
+      
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      console.log("Decoded token:", decoded);
+
+      if (!decoded || !decoded.userId) {
+        throw new Error("Token tidak valid: userId tidak ditemukan");
+      }
+      
+      const user = await prisma.users.findUnique({
+        where: { id: decoded.userId },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          name: true,
+          phone: true,
+          photo_url: true,
+          created_at: true,
+          updated_at: true
+        }
+      });
+      
+      console.log("User yang ditemukan:", user);
+      
+      if (!user) {
+        throw new Error("User tidak ditemukan");
+      }
+      
+      return user;
+    } catch (error) {
+      console.error("Error in getMe:", error);
+      if (error.name === "JsonWebTokenError") {
+        throw new Error("Token tidak valid");
+      }
+      if (error.name === "TokenExpiredError") {
+        throw new Error("Token sudah kadaluarsa");
+      }
+      throw error;
+    }
+  }
 }
+

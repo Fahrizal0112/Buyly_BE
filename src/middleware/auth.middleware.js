@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 
 export function middleware(request) {
   try {
-    const token = cookies().get('token')?.value
+    const token = request.headers.get('Authorization')?.split(' ')[1]
     
     if (!token) {
       throw new Error('Token Not Found')

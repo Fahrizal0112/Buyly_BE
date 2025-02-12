@@ -70,6 +70,7 @@ export async function PUT(req) {
       city: data.city,
       state: data.state,
       zip_code: data.zip_code,
+      token: data.token
     });
     return NextResponse.json(
       ApiResponse.success(result, "Address updated successfully"),
